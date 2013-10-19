@@ -24,7 +24,7 @@ describe 'Rediska' do
   end
 
   context 'fake redis' do
-    pending 'memory' do
+    context 'memory' do
       before do
         subject.flushall
       end
