@@ -16,5 +16,3 @@ module Rediska
 end
 
 Rediska.configure {}
-
-
