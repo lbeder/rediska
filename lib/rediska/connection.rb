@@ -53,10 +53,13 @@ module Rediska
 
     private
     def db_class
-      unless Rediska.configuration.persistent
+      case Rediska.configuration.database
+      when :memory
         Rediska::Databases::Memory
-      else
+      when :filesystem
         Rediska::Databases::PStore
+      else
+        raise ArgumentError, "invalid database type: #{Rediska.configuration.database}"
       end
     end
    end

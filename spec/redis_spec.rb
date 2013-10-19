@@ -29,7 +29,7 @@ describe 'Rediska' do
     context 'PStore' do
       before do
         Rediska.configure do |config|
-          config.persistent = true
+          config.database = :filesystem
         end
 
         subject.flushall
