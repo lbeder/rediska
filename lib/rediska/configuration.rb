@@ -5,7 +5,7 @@ module Rediska
     attr_accessor :database, :namespace
 
     def initialize
-      database = :memory
+      @database = :memory
     end
   end
 end
