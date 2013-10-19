@@ -11,7 +11,7 @@ Currently, rediska is currently only compliant with redis 3 and supports the fol
 
 ## Setup
 
-If you are using bundler add split to your Gemfile:
+If you are using bundler add rediska to your Gemfile:
 
 ``` ruby
 gem 'rediska'
