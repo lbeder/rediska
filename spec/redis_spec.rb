@@ -17,6 +17,12 @@ end
 describe 'Rediska' do
   subject { Redis.new }
 
+  before do
+    Rediska.configure do |config|
+      config.namespace = 'rediska_test'
+    end
+  end
+
   context 'fake redis' do
     pending 'memory' do
       before do

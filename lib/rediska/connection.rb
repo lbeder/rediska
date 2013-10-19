@@ -36,7 +36,8 @@ module Rediska
     end
 
     def database_instance_key
-      [@options[:host], @options[:port]].join('_')
+      @database_instance_key ||= [@options[:host], @options[:port], Rediska.configuration.namespace].
+        compact.join(':')
     end
 
     def databases
