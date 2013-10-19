@@ -71,9 +71,9 @@ shared_examples 'strings' do
     subject.set('counter', '1')
     subject.expire('counter', 600).should be_true
 
-    expect {
-      subject.incr('counter').should eq(2)
-    }.not_to change { subject.ttl('counter') }
+    subject.ttl('counter').should eq(600)
+    subject.incr('counter').should eq(2)
+    subject.ttl('counter').should be_within(30).of(600)
   end
 
   it 'should decrement the integer value of a key by one' do
@@ -87,9 +87,9 @@ shared_examples 'strings' do
     subject.set('counter', '2')
     subject.expire('counter', 600).should be_true
 
-     expect {
-      subject.decr('counter').should eq(1)
-    }.not_to change { subject.ttl('counter') }
+    subject.ttl('counter').should eq(600)
+    subject.decr('counter').should eq(1)
+    subject.ttl('counter').should be_within(30).of(600)
   end
 
   it 'should increment the integer value of a key by the given number' do
@@ -103,9 +103,9 @@ shared_examples 'strings' do
     subject.set('counter', '1')
     subject.expire('counter', 600).should be_true
 
-    expect {
-      subject.incrby('counter', '5').should eq(6)
-    }.not_to change { subject.ttl('counter') }
+    subject.ttl('counter').should eq(600)
+    subject.incrby('counter', '5').should eq(6)
+    subject.ttl('counter').should be_within(30).of(600)
   end
 
   it 'should decrement the integer value of a key by the given number' do
@@ -119,9 +119,9 @@ shared_examples 'strings' do
     subject.set('counter', '8')
     subject.expire('counter', 600).should be_true
 
-    expect {
-      subject.decrby('counter', '3').should eq(5)
-    }.not_to change { subject.ttl('counter') }
+    subject.ttl('counter').should eq(600)
+    subject.decrby('counter', '3').should eq(5)
+    subject.ttl('counter').should be_within(30).of(600)
   end
 
   it 'should get the values of all the given keys' do
