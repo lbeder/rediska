@@ -4,6 +4,22 @@ require 'tmpdir'
 require 'rediska/databases/expiring'
 
 module Rediska
+  module Utilities
+    class SyncedPStore < ::PStore
+      def initialize(file)
+        super(file, false)
+      end
+
+      def transaction(read_only = false, &block)
+        @flock ||= path + '.lock'
+
+        File.open(@flock, File::RDWR | File::CREAT) do
+          super
+        end
+      end
+    end
+  end
+
   module Databases
     class PStore
       include Expiring
@@ -39,7 +55,7 @@ module Rediska
         end
 
         def pstore(instance_key)
-          ::PStore.new(File.join(Dir.tmpdir, instance_key.to_s))
+          Utilities::SyncedPStore.new(File.join(Dir.tmpdir, instance_key.to_s))
         end
 
         def db_name(id)
