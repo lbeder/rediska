@@ -73,7 +73,7 @@ shared_examples 'strings' do
 
     subject.ttl('counter').should eq(600)
     subject.incr('counter').should eq(2)
-    subject.ttl('counter').should be_within(30).of(600)
+    subject.ttl('counter').should be_within(10).of(600)
   end
 
   it 'should decrement the integer value of a key by one' do
@@ -89,7 +89,7 @@ shared_examples 'strings' do
 
     subject.ttl('counter').should eq(600)
     subject.decr('counter').should eq(1)
-    subject.ttl('counter').should be_within(30).of(600)
+    subject.ttl('counter').should be_within(10).of(600)
   end
 
   it 'should increment the integer value of a key by the given number' do
@@ -105,7 +105,7 @@ shared_examples 'strings' do
 
     subject.ttl('counter').should eq(600)
     subject.incrby('counter', '5').should eq(6)
-    subject.ttl('counter').should be_within(30).of(600)
+    subject.ttl('counter').should be_within(10).of(600)
   end
 
   it 'should decrement the integer value of a key by the given number' do
@@ -121,7 +121,7 @@ shared_examples 'strings' do
 
     subject.ttl('counter').should eq(600)
     subject.decrby('counter', '3').should eq(5)
-    subject.ttl('counter').should be_within(30).of(600)
+    subject.ttl('counter').should be_within(10).of(600)
   end
 
   it 'should get the values of all the given keys' do
