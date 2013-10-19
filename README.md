@@ -1,4 +1,4 @@
-# Rediska*
+# Rediska
 
 [![Travis-CI](https://travis-ci.org/lbeder/rediska.png)](https://travis-ci.org/lbeder/rediska)
 
