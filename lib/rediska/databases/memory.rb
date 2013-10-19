@@ -5,6 +5,10 @@ module Rediska
     class Memory < Hash
       include Expiring
 
+      def initialize(instance_key, id)
+        super()
+      end
+
       class << self
         def flushdb(instance_key, id)
         end
