@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/lbeder/rediska'
   s.summary     = 'A light-weighted redis driver for testing, development, and minimal environments'
   s.description = 'A light-weighted redis driver for testing, development, and minimal environments,
-    which supports various data storage strategies'
+    which supports various data storage strategies.'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
