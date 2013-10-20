@@ -99,7 +99,10 @@ shared_examples 'keys' do
     subject.set('akeyd', '4')
     subject.set('key1', '5')
 
-    subject.keys('key:*').should include(*['key:a', 'key:b', 'key:c'])
+    subject.mset('database', 1, 'above', 2, 'suitability', 3, 'able', 4)
+
+    subject.keys('key:*').should =~ ['key:a', 'key:b', 'key:c']
+    subject.keys('ab*').should =~ ['above', 'able']
   end
 
   it 'should remove the expiration from a key' do

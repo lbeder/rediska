@@ -170,8 +170,7 @@ module Rediska
     end
 
     def keys(pattern = '*')
-      regexp = Regexp.new(pattern.split('*').map { |r| Regexp.escape(r) }.join('.*'))
-      data.keys.select { |key| key =~ regexp }
+      data.keys.select { |key| File.fnmatch(pattern, key) }
     end
 
     def randomkey
