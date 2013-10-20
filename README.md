@@ -1,5 +1,6 @@
 # Rediska
 
+[![Gem Version](https://badge.fury.io/rb/rediska.png)](http://badge.fury.io/rb/rediska)
 [![Build Status](https://travis-ci.org/lbeder/rediska.png)](https://travis-ci.org/lbeder/rediska)
 [![Dependency Status](https://gemnasium.com/andrew/split.png)](https://gemnasium.com/lbeder/rediska)
 [![Coverage Status](https://coveralls.io/repos/lbeder/rediska/badge.png)](https://coveralls.io/r/lbeder/rediska)
@@ -62,7 +63,7 @@ Rediska.configure do |config|
 end
 ```
 
-## Credits Contributors
+## Credits and Contributors
 
 This gem was inspired (and originally forked from) by the [fakeredis](https://github.com/guilleiguaran/fakeredis) gem.
 
