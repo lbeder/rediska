@@ -57,7 +57,7 @@ If you choose to use the filesystem backed database, you can append an additiona
 
 ```ruby
 Rediska.configure do |config|
-  config.nemspace = 'test'
+  config.namespace = 'test'
 end
 ```
 
