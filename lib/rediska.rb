@@ -11,8 +11,8 @@ module Rediska
     Redis::Connection.drivers << Rediska::Connection
 
     self.configuration ||= Configuration.new
-    yield configuration
+    yield configuration if block_given?
   end
 end
 
-Rediska.configure {}
+Rediska.configure
