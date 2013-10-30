@@ -2,7 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/rediska.png)](http://badge.fury.io/rb/rediska)
 [![Build Status](https://travis-ci.org/lbeder/rediska.png)](https://travis-ci.org/lbeder/rediska)
-[![Dependency Status](https://gemnasium.com/andrew/split.png)](https://gemnasium.com/lbeder/rediska)
+[![Dependency Status](https://gemnasium.com/lbeder/rediska.png)](https://gemnasium.com/lbeder/rediska)
 [![Coverage Status](https://coveralls.io/repos/lbeder/rediska/badge.png)](https://coveralls.io/r/lbeder/rediska)
 
 This is a light-weight implementation of a redis simulator, which is useful for local development and testing or for minimal environments (where a real redis server might not be available or even desired, while every worker matters).
