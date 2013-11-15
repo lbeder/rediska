@@ -404,7 +404,7 @@ module Rediska
     def sdiff(key1, *keys)
       [key1, *keys].each { |k| data_type_check(k, ::Set) }
       keys = keys.map { |k| data[k] || ::Set.new }
-      keys.inject(data[key1]) do |memo, set|
+      keys.inject(data[key1] || Set.new) do |memo, set|
         memo - set
       end.to_a
     end

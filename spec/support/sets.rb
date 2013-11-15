@@ -44,6 +44,12 @@ shared_examples 'sets' do
     subject.sdiff('key1', 'key2', 'key3').should =~ ['b', 'd']
   end
 
+  it 'should subtract from a nonexistent set' do
+    subject.sadd('key2', 'a')
+    subject.sadd('key2', 'b')
+    subject.sdiff('key1', 'key2').should be_empty
+  end
+
   it 'should subtract multiple sets and store the resulting set in a key' do
     subject.sadd('key1', 'a')
     subject.sadd('key1', 'b')
