@@ -36,7 +36,7 @@ GEM
     rake (10.1.0)
     rdoc (4.0.1)
       json (~> 1.4)
-    redis (3.0.5)
+    redis (3.0.6)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     rspec (2.14.1)
