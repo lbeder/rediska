@@ -159,15 +159,15 @@ shared_examples 'strings' do
   it 'should raise error if command arguments count is wrong' do
     expect {
       subject.mset
-    }.to raise_error(Redis::CommandError)
+    }.to raise_error(Redis::CommandError, "ERR wrong number of arguments for 'mset' command")
 
     expect {
       subject.mset(:key1)
-    }.to raise_error(Redis::CommandError)
+    }.to raise_error(Redis::CommandError, "ERR wrong number of arguments for 'mset' command")
 
     expect {
       subject.mset(:key1, 'value', :key2)
-    }.to raise_error(Redis::CommandError)
+    }.to raise_error(Redis::CommandError, 'ERR wrong number of arguments for MSET')
 
     subject.get('key1').should be_nil
     subject.get('key2').should be_nil

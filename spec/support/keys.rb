@@ -55,11 +55,11 @@ shared_examples 'keys' do
     subject.ttl('key1').should eq(-1)
   end
 
-  it 'should not have a ttl if expired' do
+  it 'should not have a ttl if expired (and thus key does not exist)' do
     subject.set('key1', '1')
     subject.expireat('key1', Time.now.to_i)
 
-    subject.ttl('key1').should eq(-1)
+    subject.ttl('key1').should eq(-2)
   end
 
   it 'should not find a key if expired' do
@@ -149,8 +149,29 @@ shared_examples 'keys' do
   it 'should determine the type stored at key' do
     subject.set('key1', '1')
 
-    subject.type('key1').should eq('string')
-    subject.type('key0').should eq('none')
+    # Non-existing key.
+    subject.type('key0').should be == 'none'
+
+    # String.
+    subject.set('key1', '1')
+    subject.type('key1').should be == 'string'
+
+
+    # List.
+    subject.lpush('key2', '1')
+    subject.type('key2').should be == 'list'
+
+    # Set.
+    subject.sadd('key3', '1')
+    subject.type('key3').should be == 'set'
+
+    # Sorted Set.
+    subject.zadd('key4', 1.0, '1')
+    subject.type('key4').should be == 'zset'
+
+    # Hash.
+    subject.hset('key5', 'a', '1')
+    subject.type('key5').should be == 'hash'
   end
 
   it 'should convert the value into a string before storing' do
@@ -187,21 +208,21 @@ shared_examples 'keys' do
 
     expect {
       subject.get('key1')
-    }.to raise_error(Redis::CommandError, 'ERR Operation against a key holding the wrong kind of value')
+    }.to raise_error(Redis::CommandError, 'WRONGTYPE Operation against a key holding the wrong kind of value')
 
     expect {
       subject.getset('key1', 1)
-    }.to raise_error(Redis::CommandError, 'ERR Operation against a key holding the wrong kind of value')
+    }.to raise_error(Redis::CommandError, 'WRONGTYPE Operation against a key holding the wrong kind of value')
 
     subject.hset('key2', 'one', 'two')
 
     expect {
       subject.get('key2')
-    }.to raise_error(Redis::CommandError, 'ERR Operation against a key holding the wrong kind of value')
+    }.to raise_error(Redis::CommandError, 'WRONGTYPE Operation against a key holding the wrong kind of value')
 
     expect {
       subject.getset('key2', 1)
-    }.to raise_error(Redis::CommandError, 'ERR Operation against a key holding the wrong kind of value')
+    }.to raise_error(Redis::CommandError, 'WRONGTYPE Operation against a key holding the wrong kind of value')
   end
 
   it 'should move a key from one database to another successfully' do

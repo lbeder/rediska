@@ -116,7 +116,7 @@ shared_examples 'hashes' do
   it 'should reject the wrong number of arguments' do
     expect {
       subject.hmset('hash', 'foo1', 'bar1', 'foo2', 'bar2', 'foo3')
-    }.to raise_error(Redis::CommandError)
+    }.to raise_error(Redis::CommandError, 'ERR wrong number of arguments for HMSET')
   end
 
   it 'should set multiple hash fields to multiple values' do
@@ -169,7 +169,7 @@ shared_examples 'hashes' do
   it 'should reject a list of arrays that contain an invalid number of arguments' do
     expect {
       subject.hmset('key1', [:k1, 'val1'], [:k2, 'val2', 'bogus val'])
-    }.to raise_error(Redis::CommandError)
+    }.to raise_error(Redis::CommandError, 'ERR wrong number of arguments for HMSET')
   end
 
   it 'should convert a integer field name to string for hdel' do

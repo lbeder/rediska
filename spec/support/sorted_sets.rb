@@ -191,10 +191,10 @@ shared_examples 'sorted sets' do
     subject.zrevrangebyscore('key', 100, 0).should eq(['three', 'two', 'one'])
     subject.zrevrangebyscore('key', 2, 1).should eq(['two', 'one'])
     subject.zrevrangebyscore('key', 1, 2).should be_empty
-    subject.zrevrangebyscore('key', 2, 1, with_scores: true).should eq([['two', 2], ['one', 1]])
+    subject.zrevrangebyscore('key', 2, 1, with_scores: true).should eq([['two', 2.0], ['one', 1.0]])
     subject.zrevrangebyscore('key', 100, 0, limit: [0, 1]).should eq(['three'])
     subject.zrevrangebyscore('key', 100, 0, limit: [0, -1]).should eq(['three', 'two', 'one'])
-    subject.zrevrangebyscore('key', 100, 0, limit: [1, -1], with_scores: true).should eq([['two', 2], ['one', 1]])
+    subject.zrevrangebyscore('key', 100, 0, limit: [1, -1], with_scores: true).should eq([['two', 2.0], ['one', 1.0]])
   end
 
   it 'should determine the index of a member in a sorted set' do
