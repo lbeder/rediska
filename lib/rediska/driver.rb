@@ -93,7 +93,7 @@ module Rediska
     def bgsave
     end
 
-    def bgreriteaof
+    def bgrewriteaof
     end
 
     def move key, destination_id
