@@ -21,4 +21,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency     'redis', '~> 3.0.0'
   s.add_development_dependency 'rspec', '~> 2.14'
   s.add_development_dependency 'coveralls'
+  s.add_development_dependency 'rake'
 end
