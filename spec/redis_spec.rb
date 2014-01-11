@@ -45,7 +45,7 @@ describe 'Rediska' do
     end
   end
 
-  context 'real redis (interoperability)' do
+  pending 'real redis (interoperability)' do
     before do
       subject.flushall
     end
