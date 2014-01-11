@@ -45,8 +45,7 @@ describe 'Rediska' do
     end
   end
 
-  # Remove the pending declaration in order to test interoperability with a local instance of redis.
-  pending 'real redis (interoperability)' do
+  context 'real redis (interoperability)' do
     before do
       subject.flushall
     end
