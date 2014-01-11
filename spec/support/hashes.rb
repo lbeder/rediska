@@ -64,6 +64,17 @@ shared_examples 'hashes' do
     subject.hincrby('key1', 'cont2', '5').should eq(5)
   end
 
+  it 'should increment the float value of a hash field by the given float' do
+    subject.hset('key1', 'cont1', 5.0)
+    subject.hincrbyfloat('key1', 'cont1', 4.1).should be == 9.1
+    subject.hget('key1', 'cont1').should be == '9.1'
+  end
+
+  it 'should increment non existing hash keys' do
+    subject.hget('key1', 'cont2').should be_nil
+    subject.hincrbyfloat('key1', 'cont2', 5.5).should be == 5.5
+  end
+
   it 'should get all the fields in a hash' do
     subject.hset('key1', 'i1', 'val1')
     subject.hset('key1', 'i2', 'val2')
