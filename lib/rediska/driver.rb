@@ -524,7 +524,7 @@ module Rediska
     end
 
     def hmget(key, *fields)
-      raise_argument_error('hmget')  if fields.empty?
+      raise_argument_error('hmget') if fields.empty?
 
       data_type_check(key, Hash)
       fields.map do |field|
