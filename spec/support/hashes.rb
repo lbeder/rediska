@@ -95,6 +95,8 @@ shared_examples 'hashes' do
     subject.hset('key1', 'i2', 'val2')
 
     subject.hmget('key1', 'i1', 'i2', 'i3').should eq(['val1', 'val2', nil])
+    subject.hmget('key1', ['i1', 'i2', 'i3']).should =~ ['val1', 'val2', nil]
+
     subject.hmget('key2', 'i1', 'i2').should eq([nil, nil])
   end
 
