@@ -178,4 +178,80 @@ shared_examples 'sets' do
 
     subject.smembers('key').should =~ ['a', 'b', 'c', 'd', 'e']
   end
+
+  describe 'srandmember' do
+    before(:each) do
+      @client = Redis.new
+    end
+
+    context 'with a set that has three elements' do
+      before do
+        subject.sadd('key1', 'a')
+        subject.sadd('key1', 'b')
+        subject.sadd('key1', 'c')
+      end
+
+      context 'when called without the optional number parameter' do
+        it 'is a random element from the set' do
+          random_element = subject.srandmember('key1')
+
+          ['a', 'b', 'c'].should include(random_element)
+        end
+      end
+
+      context 'when called with the optional number parameter of 1' do
+        it 'is an array of one random element from the set' do
+          subject.srandmember('key1', 1)
+
+          [['a'], ['b'], ['c']].should include(subject.srandmember('key1', 1))
+        end
+      end
+
+      context 'when called with the optional number parameter of 2' do
+        it 'is an array of two unique, random elements from the set' do
+          random_elements = subject.srandmember('key1', 2)
+
+          random_elements.should have(2).items
+          random_elements.uniq.should have(2).items
+          random_elements.all? do |element|
+            ['a', 'b', 'c'].should include(element)
+          end
+        end
+      end
+
+      context 'when called with an optional parameter of -100' do
+        it 'is an array of 100 random elements from the set, some of which are repeated' do
+          random_elements = subject.srandmember('key1', -100)
+
+          random_elements.should have(100).items
+          random_elements.uniq.should have_at_most(3).items
+          random_elements.all? do |element|
+            ['a', 'b', 'c'].should include(element)
+          end
+        end
+      end
+
+      context 'when called with an optional parameter of 100' do
+        it 'is an array of all of the elements from the set, none of which are repeated' do
+          random_elements = subject.srandmember('key1', 100)
+
+          random_elements.should have(3).items
+          random_elements.uniq.should have(3).items
+          random_elements.should =~ ['a', 'b', 'c']
+        end
+      end
+    end
+
+    context 'with an empty set' do
+      before { subject.del('key1') }
+
+      it 'is nil without the extra parameter' do
+        subject.srandmember('key1').should be_nil
+      end
+
+      it 'is an empty array with an extra parameter' do
+        subject.srandmember('key1', 1).should == []
+      end
+    end
+  end
 end
