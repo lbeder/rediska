@@ -279,4 +279,51 @@ shared_examples 'keys' do
     subject.select(0)
     subject.get('key1').should eq('1')
   end
+
+  it 'should scan all keys in the database' do
+    100.times do |x|
+      subject.set("key#{x}", "#{x}")
+    end
+
+    cursor = 0
+    all_keys = []
+    loop do
+      cursor, keys = subject.scan(cursor)
+      all_keys += keys
+      break if cursor == '0'
+    end
+
+    all_keys.uniq.should have(100).items
+    all_keys[0].should =~ /key\d+/
+  end
+
+  it "should match keys to a pattern when scanning" do
+    50.times do |x|
+      subject.set("key#{x}", "#{x}")
+    end
+
+    subject.set('miss_me', 1)
+    subject.set('pass_me', 2)
+
+    cursor = 0
+    all_keys = []
+    loop do
+      cursor, keys = subject.scan(cursor, match: 'key*')
+      all_keys += keys
+      break if cursor == '0'
+    end
+
+    all_keys.uniq.should have(50).items
+  end
+
+  it 'should specify doing more work when scanning' do
+    100.times do |x|
+      subject.set("key#{x}", "#{x}")
+    end
+
+    cursor, all_keys = subject.scan(cursor, count: 100)
+
+    cursor.should eq('0')
+    all_keys.uniq.should have(100).items
+  end
 end
