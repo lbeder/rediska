@@ -41,6 +41,34 @@ shared_examples 'strings' do
     subject.getbit('key1', 10).should eq(1)
   end
 
+  context 'when a bit is previously set to 0' do
+    before do
+      subject.setbit('key1', 10, 0)
+    end
+
+    it 'setting it to 1 returns 0' do
+      subject.setbit('key1', 10, 1).should eq(0)
+    end
+
+    it 'setting it to 0 returns 0' do
+      subject.setbit('key1', 10, 0).should eq(0)
+    end
+  end
+
+  context 'when a bit is previously set to 1' do
+    before do
+      subject.setbit('key1', 10, 1)
+    end
+
+    it 'setting it to 0 returns 1' do
+      subject.setbit('key1', 10, 0).should eq(1)
+    end
+
+    it 'setting it to 1 returns 1' do
+      subject.setbit('key1', 10, 1).should eq(1)
+    end
+  end
+
   it 'should get a substring of the string stored at a key' do
     subject.set('key1', 'This a message')
 
