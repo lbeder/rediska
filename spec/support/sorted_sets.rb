@@ -1,10 +1,6 @@
 shared_examples 'sorted sets' do
   let(:infinity) { 1.0 / 0.0 }
 
-  before(:each) do
-    subject = Redis.new
-  end
-
   it 'should add a member to a sorted set, or update its score if it already exists' do
     subject.zadd('key', 1, 'val').should be_true
     subject.zscore('key', 'val').should eq(1.0)
@@ -173,6 +169,9 @@ shared_examples 'sorted sets' do
 
     subject.zrangebyscore('key', 0, 100).should eq(['one', 'two', 'three'])
     subject.zrangebyscore('key', 1, 2).should eq(['one', 'two'])
+    subject.zrangebyscore('key', 1, '(2').should eq(['one'])
+    subject.zrangebyscore('key', '(1', 2).should eq(['two'])
+    subject.zrangebyscore('key', '(1', '(2').should eq([])
     subject.zrangebyscore('key', 0, 100, with_scores: true).should eq([['one', 1], ['two', 2], ['three', 3]])
     subject.zrangebyscore('key', 1, 2, with_scores: true).should eq([['one', 1], ['two', 2]])
     subject.zrangebyscore('key', 0, 100, limit: [0, 1]).should eq(['one'])
@@ -181,6 +180,8 @@ shared_examples 'sorted sets' do
     subject.zrangebyscore('key', '-inf', '+inf').should eq(['one', 'two', 'three'])
     subject.zrangebyscore('key', 2, '+inf').should eq(['two', 'three'])
     subject.zrangebyscore('key', '-inf', 2).should eq(['one', 'two'])
+
+    subject.zrangebyscore('badkey', 1, 2).should eq([])
   end
 
   it 'should return a reversed range of members in a sorted set, by score' do
