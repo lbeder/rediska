@@ -159,8 +159,9 @@ module Rediska
     def hdel(key, field)
       field = field.to_s
       data_type_check(key, Hash)
-      data[key] && data[key].delete(field)
+      deleted = data[key] && data[key].delete(field)
       remove_key_for_empty_collection(key)
+      deleted ? 1 : 0
     end
 
     def hkeys(key)

@@ -2,7 +2,7 @@ shared_examples 'hashes' do
   it 'should delete a hash field' do
     subject.hset('key1', 'k1', 'val1')
     subject.hset('key1', 'k2', 'val2')
-    subject.hdel('key1', 'k1')
+    subject.hdel('key1', 'k1').should eq(1)
 
     subject.hget('key1', 'k1').should be_nil
     subject.hget('key1', 'k2').should eq('val2')
@@ -11,8 +11,8 @@ shared_examples 'hashes' do
   it 'should remove a hash with no keys left' do
     subject.hset('key1', 'k1', 'val1')
     subject.hset('key1', 'k2', 'val2')
-    subject.hdel('key1', 'k1')
-    subject.hdel('key1', 'k2')
+    subject.hdel('key1', 'k1').should eq(1)
+    subject.hdel('key1', 'k2').should eq(1)
 
     subject.exists('key1').should be_false
   end
