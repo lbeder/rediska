@@ -307,7 +307,7 @@ module Rediska
     def rpoplpush(key1, key2)
       data_type_check(key1, Array)
       rpop(key1).tap do |elem|
-        lpush(key2, elem)
+        lpush(key2, elem) unless elem.nil?
       end
     end
 

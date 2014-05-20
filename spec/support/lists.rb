@@ -178,6 +178,13 @@ shared_examples 'lists' do
     subject.lrange('key2', 0, -1).should eq(['three'])
   end
 
+  context 'when the source list is empty' do
+    it 'rpoplpush does not add anything to the destination list' do
+      subject.rpoplpush('source', 'destination')
+      subject.lrange('destination', 0, -1).should eq([])
+    end
+  end
+
   it 'should append a value to a list' do
     subject.rpush('key1', 'one')
     subject.rpush('key1', 'two')
