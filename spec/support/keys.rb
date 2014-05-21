@@ -326,4 +326,53 @@ shared_examples 'keys' do
     cursor.should eq('0')
     all_keys.uniq.should have(100).items
   end
+
+  context 'with extended options' do
+    it 'uses ex option to set the expire time, in seconds' do
+      ttl = 7
+
+      subject.set('key1', '1', ex: ttl).should eq('OK')
+      subject.ttl('key1').should eq(ttl)
+    end
+
+    it 'uses px option to set the expire time, in miliseconds' do
+      ttl = 7000
+
+      subject.set('key1', '1', px: ttl).should eq('OK')
+      subject.ttl('key1').should eq(ttl / 1000)
+    end
+
+    # Note that the redis-rb implementation will always give PX last.
+    # Redis seems to process each expiration option and the last one wins.
+    it 'prefers the finer-grained PX expiration option over EX' do
+      ttl_px = 6000
+      ttl_ex = 10
+
+      subject.set('key1', '1', px: ttl_px, ex: ttl_ex)
+      subject.ttl('key1').should eq(ttl_px / 1000)
+
+      subject.set('key1', '1', ex: ttl_ex, px: ttl_px)
+      subject.ttl('key1').should eq(ttl_px / 1000)
+    end
+
+    it 'uses nx option to only set the key if it does not already exist' do
+      subject.set('key1', '1', nx: true).should be_true
+      subject.set('key1', '2', nx: true).should be_false
+
+      subject.get('key1').should eq('1')
+    end
+
+    it 'uses xx option to only set the key if it already exists' do
+      subject.set('key2', '1', xx: true).should be_false
+      subject.set('key2', '2')
+      subject.set('key2', '1', xx: true).should be_true
+
+      subject.get('key2').should eq('1')
+    end
+
+    it 'does not set the key if both xx and nx option are specified' do
+      subject.set('key2', '1', nx: true, xx: true).should be_false
+      subject.get('key2').should be_nil
+    end
+  end
 end
