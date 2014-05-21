@@ -1,5 +1,7 @@
 module Rediska
   module Driver
+    include SortMethod
+
     attr_accessor :buffer, :database_id
     attr_writer :replies
 
@@ -48,7 +50,6 @@ module Rediska
     # * brpop
     # * brpoplpush
     # * discard
-    # * sort
     # * subscribe
     # * psubscribe
     # * publish
@@ -659,10 +660,6 @@ module Rediska
       return false if keys.any?{|key| data.key?(key) }
       mset(*pairs)
       true
-    end
-
-    def sort(key)
-      # TODO: Implement
     end
 
     def incr(key)

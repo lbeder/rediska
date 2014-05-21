@@ -1,5 +1,6 @@
 require 'rediska/databases/memory'
 require 'rediska/databases/pstore'
+require 'rediska/sort_method'
 require 'rediska/sorted_set_argument_handler'
 require 'rediska/sorted_set_store'
 require 'rediska/zset'
