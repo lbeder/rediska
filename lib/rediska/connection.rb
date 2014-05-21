@@ -63,5 +63,5 @@ module Rediska
         raise ArgumentError, "invalid database type: #{Rediska.configuration.database}"
       end
     end
-   end
+  end
 end
