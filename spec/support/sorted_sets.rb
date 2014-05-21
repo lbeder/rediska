@@ -352,6 +352,10 @@ shared_examples 'sorted sets' do
       subject.zremrangebyrank('key', 25, -1).should eq(0)
       subject.zcard('key').should eq(3)
     end
+
+    it "should return 0 if the key didn't exist" do
+      subject.zremrangebyrank('key', 0, 1).should eq(0)
+    end
   end
 
   describe '#zunionstore' do
