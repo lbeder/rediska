@@ -27,6 +27,7 @@ describe 'Rediska' do
     context 'memory' do
       before do
         subject.flushall
+        subject.discard rescue nil
       end
 
       it_behaves_like 'redis'
@@ -39,6 +40,7 @@ describe 'Rediska' do
         end
 
         subject.flushall
+        subject.discard rescue nil
       end
 
       it_behaves_like 'redis'
@@ -48,6 +50,7 @@ describe 'Rediska' do
   pending 'real redis (interoperability)' do
     before do
       subject.flushall
+      subject.discard rescue nil
     end
 
     before(:all) do

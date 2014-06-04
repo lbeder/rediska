@@ -6,11 +6,15 @@ require 'rediska/sorted_set_store'
 require 'rediska/zset'
 require 'rediska/driver'
 require 'rediska/command_executor'
-require 'fakeredis/transaction_commands'
+require 'rediska/transaction_commands'
 
 module Rediska
   class Connection
     include Driver
+    include SortMethod
+    include TransactionCommands
+    include CommandExecutor
+
 
     class << self
       def databases

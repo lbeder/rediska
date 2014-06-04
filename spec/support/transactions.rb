@@ -1,8 +1,4 @@
 shared_examples 'transactions' do
-  before do
-    subject.discard rescue nil
-  end
-
   context '#multi' do
     it "should respond with 'OK'" do
       expect(subject.multi).to eq('OK')

@@ -1,9 +1,5 @@
 module Rediska
   module Driver
-    include SortMethod
-    include TransactionCommands
-    include CommandExecutor
-
     attr_accessor :database_id
     attr_writer :replies
 
