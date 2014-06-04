@@ -6,7 +6,7 @@ shared_examples 'transactions' do
       subject.mget('key1', 'key2')
     end
 
-    transaction.should eq(['OK', 'OK', ['1', '2']])
+    expect(transaction).to eq(['OK', 'OK', ['1', '2']])
   end
 
   it 'should execute all command after multi' do
@@ -14,6 +14,6 @@ shared_examples 'transactions' do
     subject.set('key1', '1')
     subject.set('key2', '2')
     subject.mget('key1', 'key2')
-    subject.exec.should be == ['OK', 'OK', ['1', '2']]
+    expect(subject.exec).to eq(['OK', 'OK', ['1', '2']])
   end
 end

@@ -1,70 +1,70 @@
 shared_examples 'sorted_method' do
   shared_examples_for 'sortable' do
     it 'returns empty array on nil' do
-      subject.sort(nil).should eq([])
+      expect(subject.sort(nil)).to eq([])
     end
 
     context 'ordering' do
       it 'orders ascending by default' do
-        subject.sort(key).should eq(['1', '2'])
+        expect(subject.sort(key)).to eq(['1', '2'])
       end
 
       it 'orders by ascending when specified' do
-        subject.sort(key, order: 'ASC').should eq(['1', '2'])
+        expect(subject.sort(key, order: 'ASC')).to eq(['1', '2'])
       end
 
       it 'orders by descending when specified' do
-        subject.sort(key, order: 'DESC').should eq(['2', '1'])
+        expect(subject.sort(key, order: 'DESC')).to eq(['2', '1'])
       end
 
       it 'orders by ascending when alpha is specified' do
-        subject.sort(key, order: 'ALPHA').should eq(['1', '2'])
+        expect(subject.sort(key, order: 'ALPHA')).to eq(['1', '2'])
       end
     end
 
     context 'projections' do
       it 'projects element when :get is #' do
-        subject.sort(key, get: '#').should eq(['1', '2'])
+        expect(subject.sort(key, get: '#')).to eq(['1', '2'])
       end
 
       it 'projects through a key pattern' do
-        subject.sort(key, get: 'fake-redis-test:values_*').should eq(['a', 'b'])
+        expect(subject.sort(key, get: 'fake-redis-test:values_*')).to eq(['a', 'b'])
       end
 
       it 'projects through a key pattern and reflects element' do
-        subject.sort(key, get: ['#', 'fake-redis-test:values_*']).should eq([['1', 'a'], ['2', 'b']])
+        expect(subject.sort(key, get: ['#', 'fake-redis-test:values_*'])).to eq([['1', 'a'], ['2', 'b']])
       end
 
       it 'projects through a hash key pattern' do
-        subject.sort(key, get: 'fake-redis-test:hash_*->key').should eq(['x', 'y'])
+        expect(subject.sort(key, get: 'fake-redis-test:hash_*->key')).to eq(['x', 'y'])
       end
     end
 
     context 'weights' do
       it 'weights by projecting through a key pattern' do
-        subject.sort(key, by: 'fake-redis-test:weight_*').should eq(['2', '1'])
+        expect(subject.sort(key, by: 'fake-redis-test:weight_*')).to eq(['2', '1'])
       end
 
       it 'weights by projecting through a key pattern and a specific order' do
-        subject.sort(key, order: 'DESC', by: 'fake-redis-test:weight_*').should eq(['1', '2'])
+        expect(subject.sort(key, order: 'DESC', by: 'fake-redis-test:weight_*')).to eq(['1', '2'])
       end
     end
 
     context 'limit' do
       it 'only returns requested window in the enumerable' do
-        subject.sort(key, limit: [0, 1]).should eq(['1'])
+        expect(subject.sort(key, limit: [0, 1])).to eq(['1'])
       end
     end
 
     context 'store' do
       it 'stores into another key' do
-        subject.sort(key, store: 'fake-redis-test:some_bucket').should eq(2)
-        subject.lrange('fake-redis-test:some_bucket', 0, -1).should eq(['1', '2'])
+        expect(subject.sort(key, store: 'fake-redis-test:some_bucket')).to eq(2)
+        expect(subject.lrange('fake-redis-test:some_bucket', 0, -1)).to eq(['1', '2'])
       end
 
       it 'stores into another key with other options specified' do
-        subject.sort(key, store: 'fake-redis-test:some_bucket', by: 'fake-redis-test:weight_*').should eq(2)
-        subject.lrange('fake-redis-test:some_bucket', 0, -1).should eq(['2', '1'])
+        expect(subject.sort(key, store: 'fake-redis-test:some_bucket', by: 'fake-redis-test:weight_*')).to eq(2)
+        expect(subject.lrange('fake-redis-test:some_bucket', 0, -1)).to eq(['2', '1'])
       end
     end
   end
