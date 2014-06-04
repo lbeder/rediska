@@ -5,6 +5,8 @@ require 'rediska/sorted_set_argument_handler'
 require 'rediska/sorted_set_store'
 require 'rediska/zset'
 require 'rediska/driver'
+require 'rediska/command_executor'
+require 'fakeredis/transaction_commands'
 
 module Rediska
   class Connection

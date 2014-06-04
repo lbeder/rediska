@@ -1,8 +1,10 @@
 module Rediska
   module Driver
     include SortMethod
+    include TransactionCommands
+    include CommandExecutor
 
-    attr_accessor :buffer, :database_id
+    attr_accessor :database_id
     attr_writer :replies
 
     def replies
@@ -22,25 +24,6 @@ module Rediska
     def timeout=(usecs)
     end
 
-    def write(command)
-      meffod = command.shift.to_s.downcase.to_sym
-      if respond_to?(meffod)
-        reply = send(meffod, *command)
-      else
-        raise Redis::CommandError, "ERR unknown command #{meffod.upcase}"
-      end
-
-      if reply == true
-        reply = 1
-      elsif reply == false
-        reply = 0
-      end
-
-      replies << reply
-      buffer << reply if buffer && meffod != :multi
-      nil
-    end
-
     def read
       replies.shift
     end
@@ -49,7 +32,6 @@ module Rediska
     # * blpop
     # * brpop
     # * brpoplpush
-    # * discard
     # * subscribe
     # * psubscribe
     # * publish
@@ -700,25 +682,6 @@ module Rediska
     end
 
     def slaveof(host, port)
-    end
-
-    def exec
-      buffer.tap {|x| self.buffer = nil }
-    end
-
-    def multi
-      self.buffer = []
-      yield if block_given?
-
-      'OK'
-    end
-
-    def watch(_)
-      'OK'
-    end
-
-    def unwatch
-      'OK'
     end
 
     def scan(start_cursor, *args)
