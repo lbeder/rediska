@@ -142,10 +142,6 @@ shared_examples 'keys' do
     expect(subject.get('key4')).to eq('3')
   end
 
-  it 'should sort the elements in a list, set or sorted set' do
-    pending 'SORT Command not implemented yet'
-  end
-
   it 'should determine the type stored at key' do
     subject.set('key1', '1')
 
