@@ -13,10 +13,11 @@ shared_examples 'transactions' do
       transaction = subject.multi do |multi|
         multi.set('key1', '1')
         multi.set('key2', '2')
+        multi.expire('key1', 123)
         multi.mget('key1', 'key2')
       end
 
-      expect(transaction).to eq(['OK', 'OK', ['1', '2']])
+      expect(transaction).to eq(['OK', 'OK', true, ['1', '2']])
     end
   end
 

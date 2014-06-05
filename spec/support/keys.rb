@@ -26,6 +26,15 @@ shared_examples 'keys' do
     }.to raise_error(Redis::CommandError)
   end
 
+  it 'should return true when setting expires on keys that exist' do
+    subject.set('key1', '1')
+    expect(subject.expire('key1', 1)).to be_truthy
+  end
+
+  it 'should return false when attempting to set expires on a key that does not exist' do
+    expect(subject.expire('key1', 1)).to be_falsey
+  end
+
   it 'should determine if a key exists' do
     subject.set('key1', '1')
 
