@@ -117,7 +117,7 @@ shared_examples 'lists' do
     subject.rpush('key1', 'two')
     subject.rpush('key1', 'three')
 
-    subject.ltrim('key1', 1, -1)
+    expect(subject.ltrim('key1', 1, -1)).to eq('OK')
     expect(subject.lrange('key1', 0, -1)).to eq(['two', 'three'])
   end
 
