@@ -14,6 +14,7 @@ shared_examples 'redis' do
   it_behaves_like 'upcase method names'
 
   it_behaves_like 'driver'
+  it_behaves_like 'sidekiq'
 end
 
 describe 'Rediska' do
@@ -23,15 +24,13 @@ describe 'Rediska' do
     Rediska.configure do |config|
       config.namespace = 'rediska_test'
     end
+
+    subject.flushall
+    subject.discard rescue nil
   end
 
   context 'fake redis' do
     context 'memory' do
-      before do
-        subject.flushall
-        subject.discard rescue nil
-      end
-
       it_behaves_like 'redis'
     end
 
@@ -40,9 +39,6 @@ describe 'Rediska' do
         Rediska.configure do |config|
           config.database = :filesystem
         end
-
-        subject.flushall
-        subject.discard rescue nil
       end
 
       it_behaves_like 'redis'
@@ -50,11 +46,6 @@ describe 'Rediska' do
   end
 
   pending 'real redis (interoperability)' do
-    before do
-      subject.flushall
-      subject.discard rescue nil
-    end
-
     before(:all) do
       Redis::Connection.drivers.pop
     end

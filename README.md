@@ -12,6 +12,9 @@ Currently, rediska is currently only compliant with redis 3 and supports the fol
 * Memory (default): the data is being stored entirely in the memory and is not persistent nor shared between different processed.
 * Filesystem: the data is being backed by the filesystem and even though slower than the in-memory implementation, it does provides persistency (to some extent, as the data is being stored in a temporary folder) and can be accessed across the different processes.
 
+Additional integrations:
+* Seamless integration with Sidekiq.
+
 ## Setup
 
 If you are using bundler add rediska to your Gemfile:
@@ -65,7 +68,7 @@ end
 
 ## Credits and Contributors
 
-This gem was inspired (and originally forked from) by the [fakeredis](https://github.com/guilleiguaran/fakeredis) gem.
+This gem was inspired by (and originally forked from) the [fakeredis](https://github.com/guilleiguaran/fakeredis) gem.
 
 ## License
 

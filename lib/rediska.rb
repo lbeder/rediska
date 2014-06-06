@@ -1,6 +1,7 @@
 require 'redis'
 require 'rediska/configuration'
 require 'rediska/connection'
+require 'rediska/sidekiq'
 
 module Rediska
   extend self

@@ -25,4 +25,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry'
   s.add_development_dependency 'pry-byebug'
   s.add_development_dependency 'pry-stack_explorer'
+  s.add_development_dependency 'sidekiq', '>= 3.0'
 end
