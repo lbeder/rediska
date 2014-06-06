@@ -2,6 +2,7 @@ ENV['RACK_ENV'] = 'test'
 
 require 'rubygems'
 require 'coveralls'
+require 'pry'
 require 'rediska'
 
 Coveralls.wear!
