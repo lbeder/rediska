@@ -1,8 +1,4 @@
-require 'spec_helper'
-
-describe Rediska::Driver do
-  subject { Redis.new }
-
+shared_examples 'driver' do
   describe '#time' do
     before(:each) do
       allow(Time).to receive_message_chain(:now, :to_f).and_return(1397845595.5139461)
