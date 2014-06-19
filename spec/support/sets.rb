@@ -143,6 +143,14 @@ shared_examples 'sets' do
     expect(subject.smembers('key1')).to match_array(['b'])
   end
 
+  it "should remove multiple members from a set" do
+    subject.sadd('key1', 'a')
+    subject.sadd('key1', 'b')
+
+    expect(subject.srem('key1', [ 'a', 'b'])).to eq(2)
+    expect(subject.smembers('key1')).to be_empty
+  end
+
   it "should remove the set's key once it's empty" do
     subject.sadd('key1', 'a')
     subject.sadd('key1', 'b')
