@@ -70,7 +70,7 @@ shared_examples 'sorted_method' do
   end
 
   describe '#sort' do
-    before(:each) do
+    before do
       subject.set('fake-redis-test:values_1', 'a')
       subject.set('fake-redis-test:values_2', 'b')
 

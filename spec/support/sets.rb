@@ -188,10 +188,6 @@ shared_examples 'sets' do
   end
 
   describe 'srandmember' do
-    before(:each) do
-      @client = Redis.new
-    end
-
     context 'with a set that has three elements' do
       before do
         subject.sadd('key1', 'a')

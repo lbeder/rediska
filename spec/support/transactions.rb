@@ -39,7 +39,7 @@ shared_examples 'transactions' do
   end
 
   context 'saving up commands for later' do
-    before(:each) do
+    before do
       subject.multi
     end
 

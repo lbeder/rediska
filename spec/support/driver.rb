@@ -1,6 +1,6 @@
 shared_examples 'driver' do
   describe '#time' do
-    before(:each) do
+    before do
       allow(Time).to receive_message_chain(:now, :to_f).and_return(1397845595.5139461)
     end
 
