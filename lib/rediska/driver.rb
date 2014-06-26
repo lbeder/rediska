@@ -94,6 +94,12 @@ module Rediska
       data[key].unpack('B*')[0].split('')[offset].to_i
     end
 
+    def bitcount(key, start_index = 0, end_index = -1)
+      return 0 unless data[key]
+
+      data[key][start_index..end_index].unpack('B*')[0].count('1')
+    end
+
     def getrange(key, start, ending)
       return unless data[key]
       data[key][start..ending]

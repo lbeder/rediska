@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 shared_examples 'strings' do
   it 'should append a value to key' do
     subject.set('key1', 'Hello')
@@ -264,5 +266,29 @@ shared_examples 'strings' do
     subject.set('key1', 'abc')
 
     expect(subject.strlen('key1')).to eq(3)
+  end
+
+  it "should return 0 bits when there's no key" do
+    expect(subject.bitcount('key1')).to eq(0)
+  end
+
+  it 'should count the number of bits of a string' do
+    subject.set('key1', 'foobar')
+
+    expect(subject.bitcount('key1')).to eq(26)
+  end
+
+  it 'should count correctly with UTF-8 strings' do
+    subject.set('key1', '判')
+
+    expect(subject.bitcount('key1')).to eq(10)
+  end
+
+  it 'should count the number of bits of a string given a range' do
+    subject.set('key1', 'foobar')
+
+    expect(subject.bitcount('key1', 0, 0)).to eq(4)
+    expect(subject.bitcount('key1', 1, 1)).to eq(6)
+    expect(subject.bitcount('key1', 0, 1)).to eq(10)
   end
 end
