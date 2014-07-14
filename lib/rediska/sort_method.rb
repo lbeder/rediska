@@ -2,7 +2,7 @@
 module Rediska
   module SortMethod
     def sort(key, *redis_options_array)
-      return [] unless key
+      return [] if !key || type(key) == 'none'
 
       unless %w(list set zset).include? type(key)
         warn "Operation against a key holding the wrong kind of value: Expected list, set or zset at #{key}."

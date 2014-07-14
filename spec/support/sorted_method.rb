@@ -100,6 +100,12 @@ shared_examples 'sorted_method' do
       end
     end
 
+    context 'none' do
+      it 'should return empty array' do
+        subject.sort('key').should be_empty
+      end
+    end
+
     context 'list' do
       let(:key) { 'fake-redis-test:list_sort' }
 
