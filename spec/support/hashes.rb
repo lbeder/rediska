@@ -8,6 +8,17 @@ shared_examples 'hashes' do
     expect(subject.hget('key1', 'k2')).to eq('val2')
   end
 
+  it 'should delete array of fields' do
+    subject.hset('key1', 'k1', 'val1')
+    subject.hset('key1', 'k2', 'val2')
+    subject.hset('key1', 'k3', 'val3')
+    expect(subject.hdel('key1', ['k1', 'k2'])).to eq(2)
+
+    expect(subject.hget('key1', 'k1')).to be_nil
+    expect(subject.hget('key1', 'k2')).to be_nil
+    expect(subject.hget('key1', 'k3')).to eq('val3')
+  end
+
   it 'should remove a hash with no keys left' do
     subject.hset('key1', 'k1', 'val1')
     subject.hset('key1', 'k2', 'val2')
