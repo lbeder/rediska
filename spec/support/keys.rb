@@ -26,6 +26,15 @@ shared_examples 'keys' do
     }.to raise_error(Redis::CommandError)
   end
 
+   it "should return true when setnx keys that don't exist" do
+     expect(subject.setnx('key1', '1')).to be_truthy
+   end
+
+   it 'should return false when setnx keys exist' do
+     subject.set('key1', '1')
+     expect(subject.setnx('key1', '1')).to be_falsey
+   end
+
   it 'should return true when setting expires on keys that exist' do
     subject.set('key1', '1')
     expect(subject.expire('key1', 1)).to be_truthy

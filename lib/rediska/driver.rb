@@ -432,10 +432,10 @@ module Rediska
 
     def setnx(key, value)
       if exists(key)
-        false
+        0
       else
         set(key, value)
-        true
+        1
       end
     end
 
