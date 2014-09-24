@@ -404,9 +404,80 @@ shared_examples 'keys' do
       end
 
       it 'errors with more than one argument' do
-        expect do
+        expect {
           subject.dump('key1', 'key2')
-        end.to raise_error(ArgumentError, /wrong number of arguments/)
+        }.to raise_error(ArgumentError, /wrong number of arguments/)
+      end
+    end
+
+    describe "#restore" do
+      it 'errors with a missing payload' do
+        expect {
+          subject.restore('key1', 0, nil)
+        }.to raise_error(Redis::CommandError, 'ERR DUMP payload version or checksum are wrong')
+      end
+
+      it 'errors with an invalid payload' do
+        expect {
+          subject.restore('key1', 0, 'zomgwtf not valid')
+        }.to raise_error(Redis::CommandError, 'ERR DUMP payload version or checksum are wrong')
+      end
+
+      describe 'with a dumped value' do
+        before do
+          subject.set('key1', 'original value')
+          @dumped_value = subject.dump('key1')
+
+          subject.del('key1')
+          expect(subject.exists('key1')).to be_falsey
+        end
+
+        it 'restores to a new key successfully' do
+          response = subject.restore('key1', 0, @dumped_value)
+          expect(response).to eq('OK')
+        end
+
+        it 'errors trying to restore to an existing key' do
+          subject.set('key1', 'something else')
+
+          expect {
+            subject.restore('key1', 0, @dumped_value)
+          }.to raise_error(Redis::CommandError, 'ERR Target key name is busy.')
+        end
+
+        it 'restores successfully with a given expire time' do
+          subject.restore('key2', 2000, @dumped_value)
+
+          expect(subject.ttl('key2')).to eq(2)
+        end
+
+        it 'restores a list successfully' do
+          subject.lpush('key1', 'val1')
+          subject.lpush('key1', 'val2')
+
+          expect(subject.type('key1')).to eq('list')
+
+          dumped_value = subject.dump('key1')
+
+          response = subject.restore('key2', 0, dumped_value)
+          expect(response).to eq('OK')
+
+          expect(subject.type('key2')).to eq('list')
+        end
+
+        it 'restores a set successfully' do
+          subject.sadd('key1', 'val1')
+          subject.sadd('key1', 'val2')
+
+          expect(subject.type('key1')).to eq('set')
+
+          dumped_value = subject.dump('key1')
+
+          response = subject.restore('key2', 0, dumped_value)
+          expect(response).to eq('OK')
+
+          expect(subject.type('key2')).to eq('set')
+        end
       end
     end
   end
