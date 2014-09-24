@@ -388,5 +388,26 @@ shared_examples 'keys' do
       expect(subject.set('key2', '1', nx: true, xx: true)).to be_falsey
       expect(subject.get('key2')).to be_nil
     end
+
+    describe '#dump' do
+      it 'returns nil for unknown key' do
+        expect(subject.exists('key1')).to be_falsey
+        expect(subject.dump('key1')).to be_nil
+      end
+
+      it 'dumps a single known key successfully' do
+        subject.set('key1', 'zomgwtf')
+
+        value = subject.dump('key1')
+        expect(value).not_to be_nil
+        expect(value).to be_a_kind_of(String)
+      end
+
+      it 'errors with more than one argument' do
+        expect do
+          subject.dump('key1', 'key2')
+        end.to raise_error(ArgumentError, /wrong number of arguments/)
+      end
+    end
   end
 end

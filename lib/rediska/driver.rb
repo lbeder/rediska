@@ -84,6 +84,12 @@ module Rediska
       true
     end
 
+    def dump(key)
+      return nil unless exists(key)
+
+      Marshal.dump(value: data[key], version: Rediska::VERSION)
+    end
+
     def get(key)
       data_type_check(key, String)
       data[key]
