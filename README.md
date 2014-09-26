@@ -20,7 +20,7 @@ Additional integrations:
 If you are using bundler add rediska to your Gemfile:
 
 ``` ruby
-gem 'rediska'
+$ gem 'rediska'
 ```
 
 Then run:
