@@ -75,7 +75,7 @@ module Rediska
     def bgrewriteaof
     end
 
-    def move key, destination_id
+    def move(key, destination_id)
       raise Redis::CommandError, 'ERR source and destination objects are the same' if destination_id == database_id
       destination = find_database(destination_id)
       return false unless data.has_key?(key)

@@ -139,8 +139,8 @@ shared_examples 'sorted sets' do
     expect(subject.zrange('key', 0, -1)).to eq(['one', 'two', 'three'])
     expect(subject.zrange('key', 1, 2)).to eq(['two', 'three'])
     expect(subject.zrange('key', 0, -1, with_scores: true)).to eq([['one', 1], ['two', 2], ['three', 3]])
-      expect(subject.zrange('key', 1, 2, with_scores: true)).to eq([['two', 2], ['three', 3]])
-    end
+    expect(subject.zrange('key', 1, 2, with_scores: true)).to eq([['two', 2], ['three', 3]])
+  end
 
   it 'should sort zrange results logically' do
     subject.zadd('key', 5, 'val2')
