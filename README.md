@@ -40,7 +40,7 @@ The gem will automatically add its fake driver to Redis::Connection.drivers, so 
 
 ## Configuration
 
-### Database type/strategy
+### Database Strategy
 Rediska supports the following database strategies:
 
 * Memory (:memory): the data is being stored entirely in the memory and is not persistent nor shared between different processed.
@@ -56,7 +56,7 @@ Rediska.configure do |config|
 end
 ```
 
-### Adding namespace
+### Adding Namespace
 
 If you choose to use the filesystem backed database, you can append an additional namespace in order to prevent conflicts like so:
 
