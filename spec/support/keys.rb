@@ -40,6 +40,16 @@ shared_examples 'keys' do
     expect(subject.expire('key1', 1)).to be_truthy
   end
 
+  it 'should return true when setting pexpires on keys that exist' do
+    subject.set('key1', '1')
+    expect(subject.pexpire('key1', 1)).to be_truthy
+  end
+
+  it 'should return true when setting pexpires on keys that exist' do
+    subject.set('key1', '1')
+    expect(subject.pexpire('key1', 1)).to be_truthy
+  end
+
   it 'should return false when attempting to set expires on a key that does not exist' do
     expect(subject.expire('key1', 1)).to be_falsey
   end
@@ -58,7 +68,13 @@ shared_examples 'keys' do
     expect(subject.ttl('key1')).to eq(1)
   end
 
-  it "should set the expiration for a key as a UNIX timestamp" do
+  it "should set a key's time to live in miliseconds" do
+    subject.set('key1', '1')
+    subject.pexpire('key1', 2200)
+    expect(subject.pttl('key1')).to be_within(0.5).of(2200)
+  end
+
+  it 'should set the expiration for a key as a UNIX timestamp' do
     subject.set('key1', '1')
     subject.expireat('key1', Time.now.to_i + 100)
 
