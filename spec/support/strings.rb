@@ -129,6 +129,12 @@ shared_examples 'strings' do
     expect(subject.get('counter')).to eq('17')
   end
 
+  it 'should increment the float value of a key by the given number' do
+    subject.set('counter', 10.0)
+    expect(subject.incrbyfloat('counter', 2.1)).to eq(12.1)
+    expect(subject.get('counter')).to eq('12.1')
+  end
+
   it 'should not change the expire value of the key during incrby' do
     subject.set('counter', '1')
     expect(subject.expire('counter', 600)).to be_truthy
