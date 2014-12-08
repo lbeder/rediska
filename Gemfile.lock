@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rediska (0.2.5)
+    rediska (0.2.5.1)
       redis (>= 3)
 
 GEM
