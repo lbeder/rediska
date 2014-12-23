@@ -71,7 +71,7 @@ shared_examples 'keys' do
   it "should set a key's time to live in miliseconds" do
     subject.set('key1', '1')
     subject.pexpire('key1', 2200)
-    expect(subject.pttl('key1')).to be_within(1).of(2200)
+    expect(subject.pttl('key1')).to be_within(10).of(2200)
   end
 
   it 'should set the expiration for a key as a UNIX timestamp' do
