@@ -43,7 +43,7 @@ module Rediska
 
         def expired?(key)
           key = normalize(key)
-          expires.include?(key) && expires[key] < Time.now
+          expires.include?(key) && expires[key] <= Time.now
         end
 
         def key?(key)
