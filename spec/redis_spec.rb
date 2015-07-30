@@ -12,6 +12,7 @@ shared_examples 'redis' do
   it_behaves_like 'transactions'
   it_behaves_like 'sorted sets'
   it_behaves_like 'upcase method names'
+  it_behaves_like 'bitop'
 
   it_behaves_like 'driver'
   it_behaves_like 'sidekiq'

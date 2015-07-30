@@ -4,6 +4,7 @@ require 'rediska/sort_method'
 require 'rediska/sorted_set_argument_handler'
 require 'rediska/sorted_set_store'
 require 'rediska/zset'
+require 'rediska/bitop'
 require 'rediska/driver'
 require 'rediska/command_executor'
 require 'rediska/transaction_commands'
@@ -12,6 +13,7 @@ module Rediska
   class Connection
     include Driver
     include SortMethod
+    include Bitop
     include TransactionCommands
     include CommandExecutor
 
