@@ -200,4 +200,24 @@ shared_examples 'lists' do
     expect(subject.lrange('key1', 0, -1)).to eq(['one', 'two'])
     expect(subject.lrange('key2', 0, -1)).to be_empty
   end
+
+  it 'should not allow pushing empty list of objects' do
+    expect {
+      subject.lpush('key1', [])
+    }.to raise_error(Redis::CommandError, /lpush[^x]/)
+
+    expect {
+      subject.lpush('key1', 1)
+      subject.lpushx('key1', [])
+    }.to raise_error(Redis::CommandError, /lpushx/)
+
+    expect {
+      subject.rpush('key1', [])
+    }.to raise_error(Redis::CommandError, /rpush[^x]/)
+
+    expect {
+      subject.rpush('key1', 1)
+      subject.rpushx('key1', [])
+    }.to raise_error(Redis::CommandError, /rpushx/)
+  end
 end
