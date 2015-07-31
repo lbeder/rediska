@@ -182,6 +182,7 @@ end
 * ZREVRANGE
 * ZREVRANGEBYSCORE
 * ZREVRANK
+* ZSCAN
 * ZSCORE
 
 ## Credits and Contributors
