@@ -46,7 +46,7 @@ describe 'Rediska' do
     end
   end
 
-  pending 'real redis (interoperability)' do
+  context 'real redis (interoperability)' do
     before(:all) do
       Redis::Connection.drivers.pop
     end

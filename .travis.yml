@@ -10,6 +10,8 @@ rvm:
   - rbx-2
 gemfile:
   - Gemfile
+services:
+  - redis-server
 matrix:
   allow_failures:
     - rvm: rbx-2
