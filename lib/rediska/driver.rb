@@ -281,7 +281,7 @@ module Rediska
 
     def lrem(key, count, value)
       data_type_check(key, Array)
-      return unless data[key]
+      return 0 unless data[key]
       old_size = data[key].size
       diff =
         if count == 0

@@ -89,6 +89,11 @@ shared_examples 'lists' do
     expect(subject.llen('key1')).to eq(2)
   end
 
+  it 'should return 0 if key does not map to a list' do
+    expect(subject.exists('nonexistant')).to eq(false)
+    expect(subject.lrem('nonexistant', 0, 'value')).to eq(0)
+  end
+
   it "should remove list's key when list is empty" do
     subject.rpush('key1', 'v1')
     subject.rpush('key1', 'v2')
