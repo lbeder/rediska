@@ -198,6 +198,42 @@ module Rediska
       data[key].keys
     end
 
+    def hscan(key, start_cursor, *args)
+      data_type_check(key, Hash)
+      return ['0', []] unless data[key]
+
+      match = '*'
+      count = 10
+
+      raise_argument_error('hscan') if args.size.odd?
+
+      if idx = args.index('MATCH')
+        match = args[idx + 1]
+      end
+
+      if idx = args.index('COUNT')
+        count = args[idx + 1]
+      end
+
+      start_cursor = start_cursor.to_i
+
+      cursor = start_cursor
+      next_keys = []
+
+      if start_cursor + count >= data[key].length
+        next_keys = (data[key].to_a)[start_cursor..-1]
+        cursor = 0
+      else
+        cursor = start_cursor + count
+        next_keys = (data[key].to_a)[start_cursor..cursor-1]
+      end
+
+      filtered_next_keys = next_keys.select{|k,v| File.fnmatch(match, k)}
+      result = filtered_next_keys.flatten.map(&:to_s)
+
+      return ["#{cursor}", result]
+    end
+
     def keys(pattern = '*')
       data.keys.select { |key| File.fnmatch(pattern, key) }
     end
