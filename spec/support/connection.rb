@@ -51,7 +51,7 @@ shared_examples 'connection' do
 
   it 'should not error with a disconnected client' do
     subject1 = Redis.new
-    subject1.client.disconnect
+    subject1.disconnect
     expect(subject1.get('key1')).to be_nil
   end
 
