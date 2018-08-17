@@ -1,3 +1,3 @@
 module Rediska
-  VERSION = '0.5.0'.freeze
+  VERSION = '1.0.2'.freeze
 end
