@@ -17,6 +17,16 @@ module Rediska
     def disconnect
     end
 
+    def client(command, _options = {})
+      case command
+      when :setname then true
+      when :getname then nil
+      when :client then true
+      else
+        raise Redis::CommandError, "ERR unknown command '#{command}'"
+      end
+    end
+
     def timeout=(usecs)
     end
 
