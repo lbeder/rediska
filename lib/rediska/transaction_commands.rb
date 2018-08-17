@@ -1,5 +1,5 @@
 module Rediska
-  TRANSACTION_COMMANDS = [:discard, :exec, :multi, :watch, :unwatch]
+  TRANSACTION_COMMANDS = [:discard, :exec, :multi, :watch, :unwatch, :client]
 
   module TransactionCommands
     def self.included(klass)
@@ -46,7 +46,7 @@ module Rediska
         raise Redis::CommandError, 'ERR EXEC without MULTI'
       end
 
-      responses  = queued_commands.map do |cmd|
+      responses = queued_commands.map do |cmd|
         begin
           send(*cmd)
         rescue => e
@@ -54,8 +54,8 @@ module Rediska
         end
       end
 
-      self.queued_commands = [] # reset queued_commands
-      self.in_multi = false     # reset in_multi state
+      self.queued_commands = []
+      self.in_multi = false
 
       responses
     end
