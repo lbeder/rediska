@@ -40,12 +40,12 @@ shared_examples 'server' do
       subject.select(0)
       expect(subject.dbsize).to eq(2)
       expect(subject.exists('key1')).to be_truthy
-      expect(subject.exists('key3')).to be_falsey
+      expect(subject.exists('key3')).to eq(0)
 
       subject.select(1)
       expect(subject.dbsize).to eq(3)
       expect(subject.exists('key4')).to be_truthy
-      expect(subject.exists('key2')).to be_falsey
+      expect(subject.exists('key2')).to eq(0)
 
       subject.flushall
       expect(subject.dbsize).to eq(0)

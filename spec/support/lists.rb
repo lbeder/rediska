@@ -90,7 +90,7 @@ shared_examples 'lists' do
   end
 
   it 'should return 0 if key does not map to a list' do
-    expect(subject.exists('nonexistant')).to eq(false)
+    expect(subject.exists('nonexistant')).to eq(0)
     expect(subject.lrem('nonexistant', 0, 'value')).to eq(0)
   end
 
@@ -100,7 +100,7 @@ shared_examples 'lists' do
     subject.lrem('key1', 1, 'v1')
     subject.lrem('key1', 1, 'v2')
 
-    expect(subject.exists('key1')).to be_falsey
+    expect(subject.exists('key1')).to eq(0)
   end
 
   it 'should set the value of an element in a list by its index' do

@@ -157,7 +157,7 @@ shared_examples 'sets' do
     subject.srem('key1', 'b')
     subject.srem('key1', 'a')
 
-    expect(subject.exists('key1')).to be_falsey
+    expect(subject.exists('key1')).to eq(0)
   end
 
   it 'should add multiple sets' do

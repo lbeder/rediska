@@ -53,7 +53,7 @@ module Rediska
       'OK'
     end
 
-    def auth(password)
+    def auth(*args)
       'OK'
     end
 
@@ -961,24 +961,10 @@ module Rediska
       data[key] ? data[key].size : 0
     end
 
-    def zscore(key, value)
-      data_type_check(key, ZSet)
-      value = data[key] && data[key][value.to_s]
-      value && value.to_s
-    end
-
     def zcount(key, min, max)
       data_type_check(key, ZSet)
       return 0 unless data[key]
       data[key].select_by_score(min, max).size
-    end
-
-    def zincrby(key, num, value)
-      data_type_check(key, ZSet)
-      data[key] ||= ZSet.new
-      data[key][value.to_s] ||= 0
-      data[key].increment(value.to_s, num)
-      data[key][value.to_s].to_s
     end
 
     def zrank(key, value)

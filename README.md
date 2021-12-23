@@ -172,7 +172,6 @@ end
 * ZADD
 * ZCARD
 * ZCOUNT
-* ZINCRBY
 * ZINTERSTORE
 * ZUNIONSTORE
 * ZRANK
@@ -184,7 +183,6 @@ end
 * ZREVRANGEBYSCORE
 * ZREVRANK
 * ZSCAN
-* ZSCORE
 
 ## Credits and Contributors
 

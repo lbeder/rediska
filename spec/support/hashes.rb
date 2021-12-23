@@ -25,7 +25,7 @@ shared_examples 'hashes' do
     expect(subject.hdel('key1', 'k1')).to eq(1)
     expect(subject.hdel('key1', 'k2')).to eq(1)
 
-    expect(subject.exists('key1')).to be_falsey
+    expect(subject.exists('key1')).to eq(0)
   end
 
   it 'should convert key to a string for hset' do
@@ -122,7 +122,7 @@ shared_examples 'hashes' do
       subject.hmset('key')
     }.to raise_error(Redis::CommandError)
 
-    expect(subject.exists('key')).to be_falsey
+    expect(subject.exists('key')).to eq(0)
   end
 
   it 'rejects an insert with a key but no value' do
@@ -134,7 +134,7 @@ shared_examples 'hashes' do
       subject.hmset('key', 'foo', 3, 'bar')
     }.to raise_error(Redis::CommandError)
 
-    expect(subject.exists('key')).to be_falsey
+    expect(subject.exists('key')).to eq(0)
   end
 
   it 'should reject the wrong number of arguments' do
@@ -159,7 +159,7 @@ shared_examples 'hashes' do
 
   it 'should set the string value of a hash field' do
     expect(subject.hset('key1', 'k1', 'val1')).to be_truthy
-    expect(subject.hset('key1', 'k1', 'val1')).to be_falsey
+    expect(subject.hset('key1', 'k1', 'val1')).to eq(0)
 
     expect(subject.hget('key1', 'k1')).to eq('val1')
   end

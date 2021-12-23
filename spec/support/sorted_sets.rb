@@ -1,47 +1,4 @@
 shared_examples 'sorted sets' do
-  let(:infinity) { 1.0 / 0.0 }
-
-  it 'should add a member to a sorted set, or update its score if it already exists' do
-    expect(subject.zadd('key', 1, 'val')).to be_truthy
-    expect(subject.zscore('key', 'val')).to eq(1.0)
-
-    expect(subject.zadd('key', 2, 'val')).to be_falsey
-    expect(subject.zscore('key', 'val')).to eq(2.0)
-
-    expect(subject.zadd('key2', 'inf', 'val')).to be_truthy
-    expect(subject.zscore('key2', 'val')).to eq(infinity)
-
-    expect(subject.zadd('key3', '+inf', 'val')).to be_truthy
-    expect(subject.zscore('key3', 'val')).to eq(infinity)
-
-    expect(subject.zadd('key4', '-inf', 'val')).to be_truthy
-    expect(subject.zscore('key4', 'val')).to eq(-infinity)
-  end
-
-  it 'should return a nil score for value not in a sorted set or empty key' do
-    subject.zadd('key', 1, 'val')
-
-    expect(subject.zscore('key', 'val')).to eq(1.0)
-    expect(subject.zscore('key', 'val2')).to be_nil
-    expect(subject.zscore('key2', 'val')).to be_nil
-  end
-
-  it 'should add multiple members to a sorted set, or update its score if it already exists' do
-    expect(subject.zadd('key', [1, 'val', 2, 'val2'])).to eq(2)
-    expect(subject.zscore('key', 'val')).to eq(1)
-    expect(subject.zscore('key', 'val2')).to eq(2)
-
-    expect(subject.zadd('key', [[5, 'val'], [3, 'val3'], [4, 'val4']])).to eq(2)
-    expect(subject.zscore('key', 'val')).to eq(5)
-    expect(subject.zscore('key', 'val2')).to eq(2)
-    expect(subject.zscore('key', 'val3')).to eq(3)
-    expect(subject.zscore('key', 'val4')).to eq(4)
-
-    expect(subject.zadd('key', [[5, 'val5'], [3, 'val6']])).to eq(2)
-    expect(subject.zscore('key', 'val5')).to eq(5)
-    expect(subject.zscore('key', 'val6')).to eq(3)
-  end
-
   it 'should error with wrong number of arguments when adding members' do
     expect {
       subject.zadd('key')
@@ -64,14 +21,6 @@ shared_examples 'sorted sets' do
     }.to raise_error(Redis::CommandError)
   end
 
-  it 'should allow floats as scores when adding or updating' do
-    expect(subject.zadd('key', 4.321, 'val')).to be_truthy
-    expect(subject.zscore('key', 'val')).to eq(4.321)
-
-    expect(subject.zadd('key', 54.3210, 'val')).to be_falsey
-    expect(subject.zscore('key', 'val')).to eq(54.321)
-  end
-
   it 'should remove members from sorted sets' do
     expect(subject.zrem('key', 'val')).to be_falsey
     expect(subject.zadd('key', 1, 'val')).to be_truthy
@@ -92,7 +41,7 @@ shared_examples 'sorted sets' do
   it "should remove sorted set's key when it is empty" do
     subject.zadd('key', 1, 'val')
     subject.zrem('key', 'val')
-    expect(subject.exists('key')).to be_falsey
+    expect(subject.exists('key')).to eq(0)
   end
 
   it 'should get the number of members in a sorted set' do
@@ -109,26 +58,6 @@ shared_examples 'sorted sets' do
     subject.zadd('key', 3, 'val3')
 
     expect(subject.zcount('key', 2, 3)).to eq(2)
-  end
-
-  it 'should increment the score of a member in a sorted set' do
-    subject.zadd('key', 1, 'val1')
-    expect(subject.zincrby('key', 2, 'val1')).to eq(3)
-    expect(subject.zscore('key', 'val1')).to eq(3)
-  end
-
-  it 'initializes the sorted set if the key wasnt already set' do
-    expect(subject.zincrby('key', 1, 'val1')).to eq(1)
-  end
-
-  it 'should convert the key to a string for zscore' do
-    subject.zadd('key', 1, 1)
-    expect(subject.zscore('key', 1)).to eq(1)
-  end
-
-  it 'should handle infinity values when incrementing a sorted set key' do
-    expect(subject.zincrby('bar', '+inf', 's2')).to eq(infinity)
-    expect(subject.zincrby('bar', '-inf', 's1')).to eq(-infinity)
   end
 
   it 'should return a range of members in a sorted set, by index' do
@@ -318,17 +247,6 @@ shared_examples 'sorted sets' do
       expect(subject.zcard('key')).to eq(1)
     end
 
-    it 'should remove items by score with infinity' do # Issue #50
-      subject.zadd('key', 10.0, 'one')
-      subject.zadd('key', 20.0, 'two')
-      subject.zadd('key', 30.0, 'three')
-      expect(subject.zremrangebyscore('key', '-inf', '+inf')).to eq(3)
-      expect(subject.zcard('key')).to eq(0)
-      expect(subject.zscore('key', 'one')).to be_nil
-      expect(subject.zscore('key', 'two')).to be_nil
-      expect(subject.zscore('key', 'three')).to be_nil
-    end
-
     it 'should return 0 if the key did not exist' do
       expect(subject.zremrangebyscore('key', 0, 2)).to eq(0)
     end
@@ -440,12 +358,6 @@ shared_examples 'sorted sets' do
         subject.zunionstore('out', %w(key1 key2), aggregate: :invalid)
       }.to raise_error(Redis::CommandError)
     end
-  end
-
-  it 'zrem should remove members add by zadd' do
-    subject.zadd('key1', 1, 3)
-    subject.zrem('key1', 3)
-    expect(subject.zscore('key1', 3)).to be_nil
   end
 
   describe '#zscan' do

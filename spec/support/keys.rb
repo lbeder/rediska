@@ -16,24 +16,14 @@ shared_examples 'keys' do
     expect(subject.get('key2')).to be_nil
   end
 
-  it 'should error deleting no keys' do
-    expect {
-      subject.del
-    }.to raise_error(Redis::CommandError)
-
-    expect {
-      subject.del []
-    }.to raise_error(Redis::CommandError)
+  it "should return true when setnx keys that don't exist" do
+    expect(subject.setnx('key1', '1')).to be_truthy
   end
 
-   it "should return true when setnx keys that don't exist" do
-     expect(subject.setnx('key1', '1')).to be_truthy
-   end
-
-   it 'should return false when setnx keys exist' do
-     subject.set('key1', '1')
-     expect(subject.setnx('key1', '1')).to be_falsey
-   end
+  it 'should return false when setnx keys exist' do
+    subject.set('key1', '1')
+    expect(subject.setnx('key1', '1')).to be_falsey
+  end
 
   it 'should return true when setting expires on keys that exist' do
     subject.set('key1', '1')
@@ -58,7 +48,7 @@ shared_examples 'keys' do
     subject.set('key1', '1')
 
     expect(subject.exists('key1')).to be_truthy
-    expect(subject.exists('key2')).to be_falsey
+    expect(subject.exists('key2')).to eq(0)
   end
 
   it "should set a key's time to live in seconds" do
@@ -123,7 +113,7 @@ shared_examples 'keys' do
     subject.set('key1', '1')
     subject.expireat('key1', Time.now.to_i)
 
-    expect(subject.exists('key1')).to be_falsey
+    expect(subject.exists('key1')).to eq(0)
   end
 
   it 'should find all keys matching the given pattern' do
@@ -387,13 +377,13 @@ shared_examples 'keys' do
 
     it 'uses nx option to only set the key if it does not already exist' do
       expect(subject.set('key1', '1', nx: true)).to be_truthy
-      expect(subject.set('key1', '2', nx: true)).to be_falsey
+      expect(subject.set('key1', '2', nx: true)).to eq(0)
 
       expect(subject.get('key1')).to eq('1')
     end
 
     it 'uses xx option to only set the key if it already exists' do
-      expect(subject.set('key2', '1', xx: true)).to be_falsey
+      expect(subject.set('key2', '1', xx: true)).to eq(0)
       subject.set('key2', '2')
       expect(subject.set('key2', '1', xx: true)).to be_truthy
 
@@ -401,13 +391,13 @@ shared_examples 'keys' do
     end
 
     it 'does not set the key if both xx and nx option are specified' do
-      expect(subject.set('key2', '1', nx: true, xx: true)).to be_falsey
+      expect(subject.set('key2', '1', nx: true, xx: true)).to eq(0)
       expect(subject.get('key2')).to be_nil
     end
 
     describe '#dump' do
       it 'returns nil for unknown key' do
-        expect(subject.exists('key1')).to be_falsey
+        expect(subject.exists('key1')).to eq(0)
         expect(subject.dump('key1')).to be_nil
       end
 
@@ -445,7 +435,7 @@ shared_examples 'keys' do
           @dumped_value = subject.dump('key1')
 
           subject.del('key1')
-          expect(subject.exists('key1')).to be_falsey
+          expect(subject.exists('key1')).to eq(0)
         end
 
         it 'restores to a new key successfully' do
